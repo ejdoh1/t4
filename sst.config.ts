@@ -1,7 +1,8 @@
+import { Config } from "sst/constructs";
 import { SSTConfig } from "sst";
 import { authStack, itemsStack } from "@t4/infrastructure";
 import { NextjsSite } from "sst/constructs";
-import { constants } from "@t4/constants";
+import { constants, paramNames } from "@t4/constants";
 
 export default {
   config(_input) {
@@ -13,6 +14,9 @@ export default {
   },
   stacks(app) {
     app.stack(function Site({ stack }) {
+      const region = new Config.Parameter(stack, paramNames.enum.region, {
+        value: constants.enum.region,
+      });
       const auth = authStack(stack);
       const items = itemsStack(stack);
 
@@ -29,6 +33,7 @@ export default {
           auth.userPoolId,
           items.table,
           items.tableName,
+          region,
         ],
         environment: {
           NEXTAUTH_URL: nextAuthUrl,

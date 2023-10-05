@@ -15,7 +15,7 @@ const Drawer = ({ children }: { children: React.ReactNode }) => {
       <input id="my-drawer-3" type="checkbox" className="drawer-toggle" />
       <div className="drawer-content flex flex-col">
         {/* Navbar */}
-        <div className="navbar bg-base-300 w-full">
+        <div className="navbar w-full bg-base-300">
           <div className="flex-none lg:hidden">
             <label htmlFor="my-drawer-3" className="btn btn-square btn-ghost">
               <svg
@@ -46,12 +46,13 @@ const Drawer = ({ children }: { children: React.ReactNode }) => {
             </ul>
           </div>
         </div>
-
-        {children}
+        <div className="xs:w-full m-auto mt-10 sm:w-full  md:w-full lg:w-3/4 xl:w-3/4">
+          {children}
+        </div>
       </div>
       <div className="drawer-side">
         <label htmlFor="my-drawer-3" className="drawer-overlay"></label>
-        <ul className="menu bg-base-200 h-full w-80 p-4">
+        <ul className="menu h-full w-80 bg-base-200 p-4">
           {/* Sidebar content here */}
           <NavItems />
         </ul>

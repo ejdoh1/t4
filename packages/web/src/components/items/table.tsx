@@ -8,24 +8,17 @@ import {
   type RowSelectionState,
 } from "@tanstack/react-table";
 import * as React from "react";
-import IndeterminateCheckbox from "../indeterminateCheckbox";
+import IndeterminateCheckbox from "../common/indeterminateCheckbox";
 
 export default function ItemsTable({
-  items,
+  data,
   rowSelection,
   setRowSelection,
 }: {
-  items: Item[];
+  data: Item[];
   rowSelection: RowSelectionState;
   setRowSelection: OnChangeFn<RowSelectionState> | undefined;
-  productImagesBaseUrl: string;
 }) {
-  const [data, setData] = React.useState(() => items);
-
-  React.useEffect(() => {
-    setData(items);
-  }, [items]);
-
   const columns = React.useMemo<ColumnDef<Item>[]>(
     () => [
       {
@@ -70,14 +63,13 @@ export default function ItemsTable({
     state: {
       rowSelection,
     },
-    enableRowSelection: true, //enable row selection for all rows
-    // enableRowSelection: row => row.original.age > 18, // or enable row selection conditionally per row
+    enableRowSelection: true,
     onRowSelectionChange: setRowSelection,
     getCoreRowModel: getCoreRowModel(),
   });
 
   return (
-    <table className="table-xs table">
+    <table className="table table-xs">
       <thead>
         {table.getHeaderGroups().map((headerGroup) => (
           <tr key={headerGroup.id}>

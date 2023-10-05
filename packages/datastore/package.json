@@ -12,5 +12,8 @@
     "@aws-sdk/client-dynamodb": "^3.425.0",
     "@aws-sdk/util-dynamodb": "^3.425.0",
     "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "@types/uuid": "^9.0.4"
   }
 }

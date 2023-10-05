@@ -15,6 +15,30 @@ class ItemsDataStore extends DataStoreBase {
     super(Config.ITEMS_TABLE_NAME);
   }
 
+  get = z
+    .function()
+    .describe("Get item")
+    .args(
+      z.object({
+        id: z.string().uuid(),
+        sub: z.string(),
+      })
+    )
+    .returns(z.promise(itemSchema))
+    .implement(async (args) => {
+      const result = await this.client.getItem({
+        TableName: this.tableName,
+        Key: {
+          id: { S: args.id },
+          sub: { S: args.sub },
+        },
+      });
+
+      if (!result.Item) throw new Error("Item not found");
+
+      return itemSchema.parse(unmarshall(result.Item));
+    });
+
   list = z
     .function()
     .describe("Get cart products by sub")
@@ -42,14 +66,14 @@ class ItemsDataStore extends DataStoreBase {
     .describe("Create item")
     .args(
       z.object({
-        item: createItemRequestSchema,
+        request: createItemRequestSchema,
         sub: z.string(),
       })
     )
     .returns(z.promise(itemSchema))
     .implement(async (args) => {
       const cp = itemSchema.parse({
-        ...args.item,
+        ...args.request,
         id: uuidv4(),
         sub: args.sub,
         createdAt: Date.now(),

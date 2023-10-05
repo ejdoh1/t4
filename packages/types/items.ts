@@ -5,6 +5,8 @@ export const createItemRequestSchema = z.object({
   description: z.string().min(1).max(255),
 });
 
+export type CreateItemRequest = z.infer<typeof createItemRequestSchema>;
+
 export const itemSchema = createItemRequestSchema.extend({
   id: z.string().uuid(),
   createdAt: z.number(),

@@ -2,7 +2,7 @@
 
 import React from "react";
 import "~/styles/globals.css";
-import Drawer from "~/components/drawer";
+import Drawer from "~/components/common/drawer";
 import { Toaster } from "react-hot-toast";
 import { api } from "~/utils/api";
 import { SessionProvider } from "next-auth/react";

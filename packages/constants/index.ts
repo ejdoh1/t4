@@ -32,3 +32,8 @@ export const paramNames = z.nativeEnum({
 export const tableNames = z.nativeEnum({
   items: "items",
 });
+
+export const routes = z.nativeEnum({
+  items: "/items",
+  home: "/home",
+});

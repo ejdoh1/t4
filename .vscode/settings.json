@@ -8,6 +8,8 @@
     "hookform",
     "NEXTAUTH",
     "nextjs",
+    "openapi",
+    "redoc",
     "signout",
     "superjson",
     "tailwindcss",

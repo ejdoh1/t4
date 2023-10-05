@@ -1,6 +1,6 @@
 import { Config } from "sst/constructs";
 import { SSTConfig } from "sst";
-import { authStack, itemsStack } from "@t4/infrastructure";
+import { authStack, itemsStack, apiStack } from "@t4/infrastructure";
 import { NextjsSite } from "sst/constructs";
 import { constants, paramNames } from "@t4/constants";
 
@@ -19,6 +19,12 @@ export default {
       });
       const auth = authStack(stack);
       const items = itemsStack(stack);
+      const api = apiStack(
+        stack,
+        [items.table],
+        auth.userPoolId.value,
+        auth.userPoolClientId.value
+      );
 
       let nextAuthUrl = constants.enum.nextAuthUrl;
       if (stack.stage !== constants.enum.prodStageName) {

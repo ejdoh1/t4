@@ -14,6 +14,18 @@ import { useForm, type FieldValues, type SubmitHandler } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { api } from "~/utils/api";
 
+const SubmitButton = () => (
+  <div className="join w-full">
+    <Link
+      href={routes.enum.items}
+      className="btn btn-secondary join-item w-1/2"
+    >
+      Cancel
+    </Link>
+    <input type="submit" className="btn btn-primary join-item w-1/2" />
+  </div>
+);
+
 export default function ItemForm({
   title = "Create an item",
   mode = "create",
@@ -121,21 +133,8 @@ export default function ItemForm({
 
         <div className="my-5"></div>
 
-        {mode === "create" ||
-          (mode === "edit" && (
-            <div className="join w-full">
-              <Link
-                href={routes.enum.items}
-                className="btn btn-secondary join-item w-1/2"
-              >
-                Cancel
-              </Link>
-              <input
-                type="submit"
-                className="btn btn-primary join-item w-1/2"
-              />
-            </div>
-          ))}
+        {mode === "create" && <SubmitButton />}
+        {mode === "edit" && <SubmitButton />}
         {mode === "view" && (
           <div className="w-full">
             <Link

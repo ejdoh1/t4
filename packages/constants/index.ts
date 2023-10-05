@@ -13,6 +13,7 @@ export const constants = z.nativeEnum({
   nextAuthUrl: "https://____REPLACE_ME____.cloudfront.net",
   authCallbackSuffix: "/api/auth/callback/cognito",
   authStackId: "Auth",
+  apiStackId: "Api",
   cognitoUserPoolClientId: "UserPoolClient",
   nextjsSiteId: "site",
   userPoolDomainId: "UserPoolDomain",
@@ -36,4 +37,6 @@ export const tableNames = z.nativeEnum({
 export const routes = z.nativeEnum({
   items: "/items",
   home: "/home",
+  docs: "/docs",
+  apps: "/apps",
 });

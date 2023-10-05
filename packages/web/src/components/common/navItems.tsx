@@ -8,6 +8,7 @@ enum Pathnames {
   HOME = "/home",
   ITEMS = "/items",
   SIGN_OUT = "/signout",
+  DOCS = "/docs",
 }
 
 const isActive = (pathname: string, path: Pathnames) => {
@@ -36,6 +37,14 @@ const NavItems = () => {
           href={Pathnames.ITEMS}
         >
           Items
+        </Link>
+      </li>
+      <li>
+        <Link
+          className={isActive(pathname, Pathnames.DOCS)}
+          href={Pathnames.DOCS}
+        >
+          Docs
         </Link>
       </li>
       <li>

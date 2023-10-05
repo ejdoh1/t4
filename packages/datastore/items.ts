@@ -39,6 +39,34 @@ class ItemsDataStore extends DataStoreBase {
       return itemSchema.parse(unmarshall(result.Item));
     });
 
+  update = z
+    .function()
+    .describe("Update item")
+    .args(
+      z.object({
+        request: createItemRequestSchema,
+        id: z.string().uuid(),
+        sub: z.string(),
+      })
+    )
+    .returns(z.promise(itemSchema))
+    .implement(async (args) => {
+      const item = await this.get({ id: args.id, sub: args.sub });
+
+      const cp = itemSchema.parse({
+        ...item,
+        ...args.request,
+        updatedAt: Date.now(),
+      } satisfies Item);
+
+      await this.client.putItem({
+        TableName: this.tableName,
+        Item: marshall(cp),
+      });
+
+      return cp;
+    });
+
   list = z
     .function()
     .describe("Get cart products by sub")

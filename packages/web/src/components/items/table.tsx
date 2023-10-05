@@ -9,6 +9,8 @@ import {
 } from "@tanstack/react-table";
 import * as React from "react";
 import IndeterminateCheckbox from "../common/indeterminateCheckbox";
+import { useAutoAnimate } from "@formkit/auto-animate/react";
+import { useRouter } from "next/navigation";
 
 export default function ItemsTable({
   data,
@@ -19,6 +21,11 @@ export default function ItemsTable({
   rowSelection: RowSelectionState;
   setRowSelection: OnChangeFn<RowSelectionState> | undefined;
 }) {
+  const router = useRouter();
+  const [animationParent] = useAutoAnimate();
+  const [hoveredRowId, setHoveredRowId] = React.useState<string | undefined>(
+    undefined,
+  );
   const columns = React.useMemo<ColumnDef<Item>[]>(
     () => [
       {
@@ -69,7 +76,7 @@ export default function ItemsTable({
   });
 
   return (
-    <table className="table table-xs">
+    <table className="table">
       <thead>
         {table.getHeaderGroups().map((headerGroup) => (
           <tr key={headerGroup.id}>
@@ -86,9 +93,32 @@ export default function ItemsTable({
           </tr>
         ))}
       </thead>
-      <tbody>
+      <tbody ref={animationParent}>
         {table.getRowModel().rows.map((row) => (
-          <tr key={row.id}>
+          <tr
+            key={row.id}
+            // on hover, show the row's checkbox
+            onMouseEnter={() => setHoveredRowId(row.id)}
+            onMouseLeave={() => setHoveredRowId(undefined)}
+            // show as dark if hovered and clickable
+            className={
+              hoveredRowId === row.id ? "cursor-pointer bg-base-300" : ""
+            }
+            onClick={(e) => {
+              // make sure we're not clicking on the checkbox
+              if (e.target instanceof HTMLInputElement) {
+                return;
+              }
+              // if clicked Link, don't do anything
+              if (e.target instanceof HTMLAnchorElement) {
+                return;
+              }
+
+              if (hoveredRowId === row.id) {
+                router.push(`/items/${row.original.id}/view`);
+              }
+            }}
+          >
             {row.getVisibleCells().map((cell) => (
               <td key={cell.id}>
                 {flexRender(cell.column.columnDef.cell, cell.getContext())}

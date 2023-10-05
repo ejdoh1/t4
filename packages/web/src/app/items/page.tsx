@@ -1,11 +1,12 @@
 "use client";
-import { useState } from "react";
-import ItemsTable from "~/components/items/table";
-import Loader from "~/components/common/loader";
-import { api } from "~/utils/api";
 import { type RowSelectionState } from "@tanstack/react-table";
+import { useState } from "react";
+import Loader from "~/components/common/loader";
 import NoItems from "~/components/common/noItems";
 import ActionsButton from "~/components/items/actionsButton";
+import CreateButton from "~/components/items/createButton";
+import ItemsTable from "~/components/items/table";
+import { api } from "~/utils/api";
 
 export default function Page() {
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
@@ -39,7 +40,7 @@ export default function Page() {
       <h1 className="mx-3 text-2xl font-bold">Items</h1>
 
       <div className="float-right mr-3">
-        {/* <CreateRecipeButton /> */}
+        <CreateButton />
         <ActionsButton
           rowSelection={rowSelection}
           setRowSelection={setRowSelection}

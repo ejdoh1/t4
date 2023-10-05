@@ -1,6 +1,6 @@
 // "use client";
 import Link from "next/link";
-import CreateItemForm from "~/components/items/createForm";
+import ItemForm from "~/components/items/form";
 
 export default function Page() {
   return (
@@ -13,7 +13,7 @@ export default function Page() {
           <li>Create</li>
         </ul>
       </div>
-      <CreateItemForm />
+      <ItemForm title="Create item" mode="create" />
     </div>
   );
 }

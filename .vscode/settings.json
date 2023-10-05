@@ -1,5 +1,17 @@
 {
   "search.exclude": {
     "**/.sst": true
-  }
+  },
+  "cSpell.words": [
+    "daisyui",
+    "NEXTAUTH",
+    "nextjs",
+    "signout",
+    "superjson",
+    "tailwindcss",
+    "tanstack",
+    "TRPC",
+    "unmarshall",
+    "uuidv"
+  ]
 }

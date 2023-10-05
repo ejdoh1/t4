@@ -1,12 +1,11 @@
+import { Config } from "sst/node/config";
 import { type GetServerSidePropsContext } from "next";
 import {
   getServerSession,
-  type DefaultSession,
   type NextAuthOptions,
+  type DefaultSession,
 } from "next-auth";
-import DiscordProvider from "next-auth/providers/discord";
-
-import { env } from "~/env.mjs";
+import CognitoProvider from "next-auth/providers/cognito";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -16,11 +15,11 @@ import { env } from "~/env.mjs";
  */
 declare module "next-auth" {
   interface Session extends DefaultSession {
-    user: DefaultSession["user"] & {
+    user: {
       id: string;
       // ...other properties
       // role: UserRole;
-    };
+    } & DefaultSession["user"];
   }
 
   // interface User {
@@ -45,9 +44,11 @@ export const authOptions: NextAuthOptions = {
     }),
   },
   providers: [
-    DiscordProvider({
-      clientId: env.DISCORD_CLIENT_ID,
-      clientSecret: env.DISCORD_CLIENT_SECRET,
+    CognitoProvider({
+      id: "cognito",
+      clientId: Config.USER_POOL_CLIENT_ID,
+      clientSecret: Config.USER_POOL_CLIENT_SECRET,
+      issuer: `https://cognito-idp.ap-southeast-2.amazonaws.com/${Config.USER_POOL_ID}`,
     }),
     /**
      * ...add more providers here.

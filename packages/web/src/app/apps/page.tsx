@@ -2,10 +2,10 @@
 import { type RowSelectionState } from "@tanstack/react-table";
 import { useState } from "react";
 import Loader from "~/components/common/loader";
-import NoItems from "~/components/common/noItems";
+import NoApps from "~/components/common/noItems";
 import ActionsButton from "~/components/apps/actionsButton";
 import CreateButton from "~/components/apps/createButton";
-import ItemsTable from "~/components/apps/table";
+import AppsTable from "~/components/apps/table";
 import { api } from "~/utils/api";
 
 export default function Page() {
@@ -22,7 +22,7 @@ export default function Page() {
 
   if (apps.data.length === 0) {
     return (
-      <NoItems
+      <NoApps
         title="No apps"
         description="Create an app to get started."
         href="/apps/create"
@@ -31,7 +31,7 @@ export default function Page() {
     );
   }
 
-  const refreshItems = async () => {
+  const refreshApps = async () => {
     await apps.refetch();
   };
 
@@ -44,11 +44,11 @@ export default function Page() {
         <ActionsButton
           rowSelection={rowSelection}
           setRowSelection={setRowSelection}
-          refreshItems={refreshItems}
-          items={apps.data}
+          refreshApps={refreshApps}
+          apps={apps.data}
         />
       </div>
-      <ItemsTable
+      <AppsTable
         data={apps.data}
         rowSelection={rowSelection}
         setRowSelection={setRowSelection}

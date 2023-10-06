@@ -1,24 +1,24 @@
 import React from "react";
 import { toast } from "react-hot-toast";
 import { api } from "~/utils/api";
-import { type itemsSchema } from "@t4/types";
+import { type appsSchema } from "@t4/types";
 import { type z } from "zod";
 import { type RowSelectionState } from "@tanstack/react-table";
 
 const ActionsButton = ({
   rowSelection,
   setRowSelection,
-  refreshItems,
-  items,
+  refreshApps,
+  apps,
 }: {
   rowSelection: RowSelectionState;
   setRowSelection: React.Dispatch<React.SetStateAction<RowSelectionState>>;
-  refreshItems: () => Promise<void>;
-  items: z.infer<typeof itemsSchema>;
+  refreshApps: () => Promise<void>;
+  apps: z.infer<typeof appsSchema>;
 }) => {
-  const mutation = api.items.delete.useMutation();
+  const mutation = api.apps.delete.useMutation();
 
-  const deleteItems = async (selected: string[]) => {
+  const deleteApps = async (selected: string[]) => {
     await Promise.all(
       selected.map((id) => {
         return mutation.mutateAsync({
@@ -38,19 +38,19 @@ const ActionsButton = ({
     const tmp: string[] = [];
     Object.keys(rowSelection).forEach((key: string) => {
       if (rowSelection[key] === false) return;
-      const item = items[parseInt(key)];
-      if (item === undefined) return;
-      tmp.push(item.id);
+      const app = apps[parseInt(key)];
+      if (app === undefined) return;
+      tmp.push(app.id);
     });
 
-    await toast.promise(deleteItems(tmp), {
-      loading: "Deleting items...",
+    await toast.promise(deleteApps(tmp), {
+      loading: "Deleting apps...",
       success: () => {
         setRowSelection({});
-        refreshItems().catch((err) => {
+        refreshApps().catch((err) => {
           console.error(err);
         });
-        return "Items deleted";
+        return "Apps deleted";
       },
       error: () => {
         return "Something went wrong";
@@ -69,7 +69,7 @@ const ActionsButton = ({
       >
         <li>
           <a
-            // if no items are selected, grey out the button
+            // if no apps are selected, grey out the button
             className={
               Object.keys(rowSelection).length === 0
                 ? "btn-disabled opacity-50"

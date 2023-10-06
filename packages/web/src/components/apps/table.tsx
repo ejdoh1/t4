@@ -1,4 +1,4 @@
-import { type Item } from "@t4/types";
+import { type App } from "@t4/types";
 import {
   flexRender,
   getCoreRowModel,
@@ -12,12 +12,12 @@ import IndeterminateCheckbox from "../common/indeterminateCheckbox";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { useRouter } from "next/navigation";
 
-export default function ItemsTable({
+export default function AppsTable({
   data,
   rowSelection,
   setRowSelection,
 }: {
-  data: Item[];
+  data: App[];
   rowSelection: RowSelectionState;
   setRowSelection: OnChangeFn<RowSelectionState> | undefined;
 }) {
@@ -26,7 +26,7 @@ export default function ItemsTable({
   const [hoveredRowId, setHoveredRowId] = React.useState<string | undefined>(
     undefined,
   );
-  const columns = React.useMemo<ColumnDef<Item>[]>(
+  const columns = React.useMemo<ColumnDef<App>[]>(
     () => [
       {
         id: "select",
@@ -57,8 +57,8 @@ export default function ItemsTable({
         accessorKey: "name",
       },
       {
-        header: "Description",
-        accessorKey: "description",
+        header: "Client ID",
+        accessorKey: "id",
       },
     ],
     [],
@@ -115,7 +115,7 @@ export default function ItemsTable({
               }
 
               if (hoveredRowId === row.id) {
-                router.push(`/items/${row.original.id}/view`);
+                router.push(`/apps/${row.original.id}`);
               }
             }}
           >

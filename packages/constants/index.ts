@@ -17,6 +17,8 @@ export const constants = z.nativeEnum({
   cognitoUserPoolClientId: "UserPoolClient",
   nextjsSiteId: "site",
   userPoolDomainId: "UserPoolDomain",
+  resourceServerId: "ResourceServer",
+  resourceServerIdentifier: "t4",
 });
 
 export const paramNames = z.nativeEnum({
@@ -28,10 +30,12 @@ export const paramNames = z.nativeEnum({
   apiUrl: "API_URL",
   cognitoDomain: "COGNITO_DOMAIN",
   itemsTableName: "ITEMS_TABLE_NAME",
+  appsTableName: "APPS_TABLE_NAME",
 });
 
 export const tableNames = z.nativeEnum({
   items: "items",
+  apps: "apps",
 });
 
 export const routes = z.nativeEnum({

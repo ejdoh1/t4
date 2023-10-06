@@ -1,19 +1,21 @@
-import { itemsSchema, itemSchema, createItemRequestSchema } from "@t4/types";
+import { appsSchema, appSchema, createAppRequestSchema } from "@t4/types";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
-import { ItemsDataStore } from "@t4/datastore";
+import { AppsDataStore } from "@t4/datastore";
+import { AuthProvider } from "@t4/authprovider";
 import { z } from "zod";
 
-const ds = new ItemsDataStore();
+const ds = new AppsDataStore();
+const auth = new AuthProvider();
 
 const router = createTRPCRouter({
   update: protectedProcedure
     .input(
       z.object({
         id: z.string().uuid(),
-        request: createItemRequestSchema,
+        request: createAppRequestSchema,
       }),
     )
-    .output(itemSchema)
+    .output(appSchema)
     .mutation(
       async (args) =>
         await ds.update({
@@ -22,28 +24,35 @@ const router = createTRPCRouter({
           id: args.input.id,
         }),
     ),
-
   create: protectedProcedure
     .input(
       z.object({
-        request: createItemRequestSchema,
+        request: createAppRequestSchema,
       }),
     )
-    .output(itemSchema)
-    .mutation(
-      async (args) =>
-        await ds.create({
-          request: args.input.request,
-          sub: args.ctx.session.user.id,
-        }),
-    ),
-
-  list: protectedProcedure.output(itemsSchema).query(
-    async (args) =>
-      await ds.list({
+    .output(appSchema)
+    .mutation(async (args) => {
+      // const id = uuid
+      const userPoolClient = await auth.createUserPoolClient({
+        clientName: args.ctx.session.user.id + args.input.request.name,
+      });
+      if (!userPoolClient.UserPoolClient?.ClientId) {
+        throw new Error("User pool client not created");
+      }
+      const response = await ds.create({
+        request: args.input.request,
         sub: args.ctx.session.user.id,
-      }),
-  ),
+        id: userPoolClient.UserPoolClient?.ClientId,
+      });
+      return response;
+    }),
+  list: protectedProcedure.output(appsSchema).query(async (args) => {
+    console.log("list:", args.ctx.session.user.id);
+    const response = await ds.list({
+      sub: args.ctx.session.user.id,
+    });
+    return response;
+  }),
   delete: protectedProcedure.input(z.object({ id: z.string() })).mutation(
     async (args) =>
       await ds.delete({
@@ -53,7 +62,7 @@ const router = createTRPCRouter({
   ),
   get: protectedProcedure
     .input(z.object({ id: z.string() }))
-    .output(itemSchema)
+    .output(appSchema)
     .query(
       async (args) =>
         await ds.get({

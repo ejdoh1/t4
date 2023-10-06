@@ -1,6 +1,6 @@
 import { Config } from "sst/constructs";
 import { SSTConfig } from "sst";
-import { authStack, itemsStack, apiStack } from "@t4/infrastructure";
+import { authStack, itemsStack, apiStack, appsStack } from "@t4/infrastructure";
 import { NextjsSite } from "sst/constructs";
 import { constants, paramNames } from "@t4/constants";
 
@@ -19,9 +19,10 @@ export default {
       });
       const auth = authStack(stack);
       const items = itemsStack(stack);
+      const apps = appsStack(stack);
       const api = apiStack(
         stack,
-        [items.table],
+        [items.table, apps.table],
         auth.userPoolId.value,
         auth.userPoolClientId.value
       );
@@ -39,6 +40,8 @@ export default {
           auth.userPoolId,
           items.table,
           items.tableName,
+          apps.table,
+          apps.tableName,
           region,
         ],
         environment: {

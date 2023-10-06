@@ -9,6 +9,22 @@ import { ItemsDataStore } from "@t4/datastore";
 const itemDs = new ItemsDataStore();
 
 const itemsRouter = createTRPCRouter({
+  // listItems: publicProcedure
+  //   .meta({
+  //     openapi: {
+  //       method: "GET",
+  //       path: "/items",
+  //       tags: ["Items"],
+  //       summary: "Get all items",
+  //     },
+  //   })
+  //   .output(itemSchema.array())
+  //   .query(
+  //     async () =>
+  //       await itemDs.list({
+  //         sub: "test",
+  //       })
+  //   ),
   createItem: publicProcedure
     .meta({
       openapi: {
@@ -24,7 +40,7 @@ const itemsRouter = createTRPCRouter({
       const request = createItemRequestSchema.parse({
         ...input,
       } satisfies CreateItemRequest);
-      return itemDs.create({
+      return await itemDs.create({
         request,
         sub: "test",
       });

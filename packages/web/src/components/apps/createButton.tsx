@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const CreateButton = () => {
   return (
-    <Link href="/items/create" className="btn btn-primary btn-outline">
+    <Link href="/apps/create" className="btn btn-primary btn-outline">
       Create
     </Link>
   );

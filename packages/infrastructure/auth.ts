@@ -63,10 +63,37 @@ export const authStack = (stack: Stack) => {
     },
   });
 
+  const writeItemsScope = new cognito.ResourceServerScope({
+    scopeName: "items:write",
+    scopeDescription: "Write items",
+  });
+
+  const readItemsScope = new cognito.ResourceServerScope({
+    scopeName: "items:read",
+    scopeDescription: "Read items",
+  });
+
+  const resourceServer = new cognito.UserPoolResourceServer(
+    stack,
+    constants.enum.resourceServerId,
+    {
+      identifier: constants.enum.resourceServerIdentifier,
+      userPool: cognitoStack.cdk.userPool,
+      scopes: [writeItemsScope, readItemsScope],
+    }
+  );
+
+  // const scope = cognito.OAuthScope.resourceServer(
+  //   resourceServer,
+  //   writeItemsScope
+  // );
+  // scope.scopeName
+
   return {
     cognitoStack,
     userPoolId,
     userPoolClientId,
     userPoolClientSecret,
+    resourceServer,
   };
 };

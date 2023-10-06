@@ -3,7 +3,7 @@ import NavItems from "./navItems";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { constants } from "@t4/constants";
-// import Breadcrumbs from "./breadcrumbs";
+import Breadcrumbs from "./breadcrumbs";
 
 const Drawer = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
@@ -48,7 +48,7 @@ const Drawer = ({ children }: { children: React.ReactNode }) => {
           </div>
         </div>
         <div>
-          {/* <Breadcrumbs /> */}
+          <Breadcrumbs />
           <div className="xs:w-full m-auto mt-10 sm:w-full  md:w-full lg:w-3/4 xl:w-3/4">
             {children}
           </div>

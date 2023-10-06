@@ -13,7 +13,7 @@ enum Pathnames {
 }
 
 const isActive = (pathname: string, path: Pathnames) => {
-  return pathname === path.toString() ? "active" : "";
+  return pathname.startsWith(path.toString()) ? "active" : "";
 };
 
 const NavItems = () => {

@@ -28,5 +28,5 @@ export default function Page() {
     return <div>{error.message}</div>;
   }
 
-  return <ItemForm title="Edit item" item={data} mode="edit" />;
+  return <ItemForm title="View item" item={data} mode="view" />;
 }

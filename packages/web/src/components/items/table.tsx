@@ -115,7 +115,7 @@ export default function ItemsTable({
               }
 
               if (hoveredRowId === row.id) {
-                router.push(`/items/${row.original.id}/view`);
+                router.push(`/items/${row.original.id}`);
               }
             }}
           >

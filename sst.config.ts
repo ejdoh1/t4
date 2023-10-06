@@ -47,6 +47,8 @@ export default {
         },
       });
 
+      site.attachPermissions(["cognito-idp:*"]);
+
       stack.addOutputs({
         SiteUrl: site.url,
       });

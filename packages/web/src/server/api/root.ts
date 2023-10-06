@@ -1,4 +1,5 @@
 import itemsRouter from "~/server/api/routers/items";
+import appsRouter from "~/server/api/routers/apps";
 import apiDocsRouter from "~/server/api/routers/apiDocs";
 import { createTRPCRouter } from "~/server/api/trpc";
 
@@ -9,6 +10,7 @@ import { createTRPCRouter } from "~/server/api/trpc";
  */
 export const appRouter = createTRPCRouter({
   items: itemsRouter,
+  apps: appsRouter,
   apiDocs: apiDocsRouter,
 });
 

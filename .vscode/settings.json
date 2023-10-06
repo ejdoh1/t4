@@ -16,6 +16,7 @@
     "tanstack",
     "TRPC",
     "unmarshall",
-    "uuidv"
+    "uuidv",
+    "zustand"
   ]
 }

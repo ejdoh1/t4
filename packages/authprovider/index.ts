@@ -4,10 +4,10 @@ import {
   CognitoIdentityProviderClient,
   CreateUserPoolClientCommand,
   CreateUserPoolClientCommandInput,
-  // ListUserPoolClientsCommand,
-  // ListUserPoolClientsCommandInput,
   DescribeUserPoolClientCommand,
   DescribeUserPoolClientCommandInput,
+  DeleteUserPoolClientCommand,
+  DeleteUserPoolClientCommandInput,
 } from "@aws-sdk/client-cognito-identity-provider";
 
 class AuthProvider {
@@ -17,6 +17,17 @@ class AuthProvider {
       region: Config.REGION,
     });
   }
+
+  deleteUserPoolClient = z
+    .function()
+    .args(z.object({ clientId: z.string() }))
+    .implement(async (args) => {
+      const command = new DeleteUserPoolClientCommand({
+        ClientId: args.clientId,
+        UserPoolId: Config.USER_POOL_ID,
+      } satisfies DeleteUserPoolClientCommandInput);
+      return await this.cognitoClient.send(command);
+    });
 
   createUserPoolClient = z
     .function()
@@ -33,7 +44,7 @@ class AuthProvider {
       return await this.cognitoClient.send(command);
     });
 
-  getUserPoolClientSecret = z
+  describeUserPoolClient = z
     .function()
     .args(z.object({ clientId: z.string() }))
     .implement(async (args) => {
@@ -42,7 +53,13 @@ class AuthProvider {
         UserPoolId: Config.USER_POOL_ID,
       } satisfies DescribeUserPoolClientCommandInput);
       const response = await this.cognitoClient.send(command);
-      return response.UserPoolClient?.ClientSecret;
+      if (!response.UserPoolClient?.ClientSecret) {
+        throw new Error("User pool client secret not found");
+      }
+      if (!response.UserPoolClient?.ClientId) {
+        throw new Error("User pool client id not found");
+      }
+      return response.UserPoolClient;
     });
 }
 

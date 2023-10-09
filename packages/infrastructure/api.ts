@@ -1,6 +1,8 @@
+import { Config } from "sst/constructs";
 import { constants } from "@t4/constants";
 import { Api, Stack } from "sst/constructs";
 import { SSTConstruct } from "sst/constructs/Construct";
+import { paramNames } from "@t4/constants";
 
 export function apiStack(
   stack: Stack,
@@ -36,7 +38,17 @@ export function apiStack(
   stack.addOutputs({
     ApiEndpoint: api.url,
   });
+
+  const apiEndpointUrl = new Config.Parameter(
+    stack,
+    paramNames.enum.apiEndpointUrl,
+    {
+      value: api.url,
+    }
+  );
+
   return {
     api,
+    apiEndpointUrl,
   };
 }

@@ -1,32 +1,29 @@
 "use client";
-// import Link from "next/link";
 import { useParams } from "next/navigation";
 import Loader from "~/components/common/loader";
 import { api } from "~/utils/api";
 import AppForm from "~/components/apps/form";
 
-// const getTruncatedTitleWithEllipsis = (title: string) => {
-//   if (title.length > 20) {
-//     return title.slice(0, 30) + "...";
-//   }
-//   return title;
-// };
-
 export default function Page() {
   const params = useParams();
   const id = params?.id as string;
 
-  const { data, error, isLoading } = api.apps.get.useQuery({
+  const app = api.apps.get.useQuery({
+    id,
+  });
+  const secret = api.apps.getClientSecret.useQuery({
     id,
   });
 
-  if (isLoading) {
+  if (app.isLoading || secret.isLoading) {
     return <Loader text="Loading app" />;
   }
 
-  if (error) {
-    return <div>{error.message}</div>;
+  if (app.isError || secret.isError) {
+    return <>Error</>;
   }
 
-  return <AppForm title="View app" app={data} mode="view" />;
+  return (
+    <AppForm title="View app" app={app.data} mode="view" secret={secret.data} />
+  );
 }

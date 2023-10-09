@@ -43,6 +43,7 @@ export default {
           apps.table,
           apps.tableName,
           region,
+          api.apiEndpointUrl,
         ],
         environment: {
           NEXTAUTH_URL: nextAuthUrl,

@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { routes } from "@t4/constants";
@@ -13,6 +14,7 @@ import { useRouter } from "next/navigation";
 import { useForm, type FieldValues, type SubmitHandler } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { api } from "~/utils/api";
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
 
 const SubmitButton = () => (
   <div className="join w-full">
@@ -27,11 +29,14 @@ export default function AppForm({
   title = "Create an app",
   mode = "create",
   app,
+  secret,
 }: {
   title?: string;
   mode?: "create" | "edit" | "view";
   app?: App;
+  secret?: string;
 }) {
+  const [revealSecret, setRevealSecret] = useState(false);
   const [animationParent] = useAutoAnimate();
   const mutationCreate = api.apps.create.useMutation();
   const mutationUpdate = api.apps.update.useMutation();
@@ -106,6 +111,54 @@ export default function AppForm({
 
         {errors.name?.message && (
           <p className="text-sm text-red-500">{errors.name?.message}</p>
+        )}
+
+        {app?.id && mode === "view" && (
+          <div>
+            <label className="label">
+              <span className="label-text text-base font-semibold text-gray-500">
+                Client ID
+              </span>
+            </label>
+            <input
+              className="input input-bordered input-primary w-full"
+              readOnly
+              {...register("id")}
+            />
+          </div>
+        )}
+
+        {secret && (
+          <div>
+            <label className="label">
+              <span className="label-text text-base font-semibold text-gray-500">
+                Client Secret
+              </span>
+            </label>
+            <div className="join w-full">
+              <input
+                className="input join-item input-bordered input-primary w-full"
+                readOnly
+                value={secret}
+                type={revealSecret ? "text" : "password"}
+              />
+              <button
+                type="button"
+                className="btn btn-secondary join-item"
+                onClick={() => setRevealSecret(!revealSecret)}
+              >
+                {revealSecret ? (
+                  <EyeSlashIcon className="h-6 w-6" aria-hidden="true" />
+                ) : (
+                  <EyeIcon
+                    className="h-6 w-6"
+                    aria-hidden="true"
+                    fill="currentColor"
+                  />
+                )}
+              </button>
+            </div>
+          </div>
         )}
 
         <div className="my-5"></div>

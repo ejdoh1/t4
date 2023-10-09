@@ -19,6 +19,7 @@ export const constants = z.nativeEnum({
   userPoolDomainId: "UserPoolDomain",
   resourceServerId: "ResourceServer",
   resourceServerIdentifier: "t4",
+  appsCountLimit: 2,
 });
 
 export const paramNames = z.nativeEnum({
@@ -31,6 +32,7 @@ export const paramNames = z.nativeEnum({
   cognitoDomain: "COGNITO_DOMAIN",
   itemsTableName: "ITEMS_TABLE_NAME",
   appsTableName: "APPS_TABLE_NAME",
+  apiEndpointUrl: "API_ENDPOINT_URL",
 });
 
 export const tableNames = z.nativeEnum({

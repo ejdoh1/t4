@@ -56,7 +56,7 @@ class ItemsDataStore extends DataStoreBase {
       const cp = itemSchema.parse({
         ...item,
         ...args.request,
-        updatedAt: Date.now(),
+        updatedAt: new Date().toISOString(),
       } satisfies Item);
 
       await this.client.putItem({
@@ -100,12 +100,13 @@ class ItemsDataStore extends DataStoreBase {
     )
     .returns(z.promise(itemSchema))
     .implement(async (args) => {
+      const now = new Date().toISOString();
       const cp = itemSchema.parse({
         ...args.request,
         id: uuidv4(),
         sub: args.sub,
-        createdAt: Date.now(),
-        updatedAt: Date.now(),
+        createdAt: now,
+        updatedAt: now,
       } satisfies Item);
 
       const item = marshall(cp);

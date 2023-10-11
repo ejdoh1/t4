@@ -1,6 +1,6 @@
 import { Config } from "sst/constructs";
 import { constants } from "@t4/constants";
-import { Api, Stack } from "sst/constructs";
+import { Api, Stack, Function } from "sst/constructs";
 import { SSTConstruct } from "sst/constructs/Construct";
 import { paramNames } from "@t4/constants";
 
@@ -19,21 +19,25 @@ export function apiStack(
         runtime: "nodejs18.x",
         bind: customBinds,
       },
-      authorizer: "Authorizer",
+      authorizer: "myAuthorizer",
     },
     routes: {
       "ANY /api/v0.0.1/{proxy+}": "packages/api/index.handlerV0_0_1",
     },
     authorizers: {
-      Authorizer: {
-        type: "user_pool",
-        userPool: {
-          id: userPoolId,
-          clientIds: [userPoolClientId],
-        },
+      myAuthorizer: {
+        type: "lambda",
+        function: new Function(stack, "Authorizer", {
+          handler: "packages/authorizer/main.handler",
+          bind: customBinds,
+          permissions: ["cognito-idp:*"],
+        }),
+        resultsCacheTtl: "30 seconds",
       },
     },
   });
+
+  // api.attachPermissions(["cognito-idp:*"]);
 
   stack.addOutputs({
     ApiEndpoint: api.url,

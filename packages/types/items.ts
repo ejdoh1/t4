@@ -9,8 +9,8 @@ export type CreateItemRequest = z.infer<typeof createItemRequestSchema>;
 
 export const itemSchema = createItemRequestSchema.extend({
   id: z.string().uuid(),
-  createdAt: z.number(),
-  updatedAt: z.number(),
+  createdAt: z.string().datetime(),
+  updatedAt: z.string().datetime(),
   sub: z.string(),
 });
 

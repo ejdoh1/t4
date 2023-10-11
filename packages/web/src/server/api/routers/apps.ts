@@ -1,3 +1,4 @@
+import { Config } from "sst/node/config";
 import { appsSchema, appSchema, createAppRequestSchema } from "@t4/types";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { AppsDataStore } from "@t4/datastore";
@@ -96,6 +97,8 @@ const router = createTRPCRouter({
       }
       return client.ClientSecret;
     }),
+  getApiUrl: protectedProcedure.query(() => Config.API_ENDPOINT_URL),
+  getCognitoDomain: protectedProcedure.query(() => Config.COGNITO_DOMAIN),
 });
 
 export default router;

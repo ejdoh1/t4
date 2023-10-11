@@ -2,8 +2,9 @@ import { Config } from "sst/constructs";
 import { type Stack, Cognito } from "sst/constructs";
 import { paramNames, constants } from "@t4/constants";
 import cognito from "aws-cdk-lib/aws-cognito";
+import { scopesSchema } from "@t4/types";
 
-export const authStack = (stack: Stack) => {
+export const authStack = (stack: Stack, domainPrefix: string) => {
   const cognitoStack = new Cognito(stack, constants.enum.authStackId, {
     cdk: {
       userPool: {
@@ -59,17 +60,17 @@ export const authStack = (stack: Stack) => {
   // add domain
   cognitoStack.cdk.userPool.addDomain(constants.enum.userPoolDomainId, {
     cognitoDomain: {
-      domainPrefix: `${constants.enum.serviceName}-${stack.stage}`,
+      domainPrefix,
     },
   });
 
   const writeItemsScope = new cognito.ResourceServerScope({
-    scopeName: "items:write",
+    scopeName: scopesSchema.enum.writeItems,
     scopeDescription: "Write items",
   });
 
   const readItemsScope = new cognito.ResourceServerScope({
-    scopeName: "items:read",
+    scopeName: scopesSchema.enum.readItems,
     scopeDescription: "Read items",
   });
 
@@ -82,12 +83,6 @@ export const authStack = (stack: Stack) => {
       scopes: [writeItemsScope, readItemsScope],
     }
   );
-
-  // const scope = cognito.OAuthScope.resourceServer(
-  //   resourceServer,
-  //   writeItemsScope
-  // );
-  // scope.scopeName
 
   return {
     cognitoStack,

@@ -17,12 +17,23 @@ export default {
       const region = new Config.Parameter(stack, paramNames.enum.region, {
         value: constants.enum.region,
       });
-      const auth = authStack(stack);
+
+      const cognitoDomainPrefix = `${constants.enum.serviceName}-${stack.stage}`;
+
+      const cognitoDomain = new Config.Parameter(
+        stack,
+        paramNames.enum.cognitoDomain,
+        {
+          value: `https://${cognitoDomainPrefix}.auth.${constants.enum.region}.amazoncognito.com`,
+        }
+      );
+
+      const auth = authStack(stack, cognitoDomainPrefix);
       const items = itemsStack(stack);
       const apps = appsStack(stack);
       const api = apiStack(
         stack,
-        [items.table, apps.table],
+        [items.table, apps.table, items.tableName, region, auth.userPoolId],
         auth.userPoolId.value,
         auth.userPoolClientId.value
       );
@@ -44,6 +55,7 @@ export default {
           apps.tableName,
           region,
           api.apiEndpointUrl,
+          cognitoDomain,
         ],
         environment: {
           NEXTAUTH_URL: nextAuthUrl,

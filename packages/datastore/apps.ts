@@ -2,7 +2,6 @@ import { Config } from "sst/node/config";
 import { z } from "zod";
 import { unmarshall, marshall } from "@aws-sdk/util-dynamodb";
 import { appSchema, appsSchema, createAppRequestSchema, App } from "@t4/types";
-// import { v4 as uuidv4 } from "uuid";
 import { DataStoreBase } from "./base";
 
 class AppsDataStore extends DataStoreBase {

@@ -4,14 +4,22 @@ import {
   CreateAWSLambdaContextOptions,
 } from "@trpc/server/adapters/aws-lambda";
 import { OpenApiMeta } from "trpc-openapi";
-import { v4 as uuid } from "uuid";
 
 export type Context = {
-  requestId: string;
+  sub: string;
+};
+
+export const createContext = async ({
+  event,
+  context,
+}: // eslint-disable-next-line @typescript-eslint/require-await
+CreateAWSLambdaContextOptions<APIGatewayEvent>): Promise<Context> => {
+  const sub = event.requestContext.authorizer.lambda.sub;
+  return { sub };
 };
 
 const t = initTRPC
-  .context<Context>()
+  .context<typeof createContext>()
   .meta<OpenApiMeta>()
   .create({
     errorFormatter: ({ error, shape }) => {
@@ -24,15 +32,6 @@ const t = initTRPC
       return shape;
     },
   });
-
-export const createContext = async ({
-  event,
-  context,
-}: // eslint-disable-next-line @typescript-eslint/require-await
-CreateAWSLambdaContextOptions<APIGatewayEvent>): Promise<Context> => {
-  const requestId = uuid();
-  return { requestId };
-};
 
 export const publicProcedure = t.procedure;
 

@@ -9,6 +9,8 @@ import {
   DeleteUserPoolClientCommand,
   DeleteUserPoolClientCommandInput,
 } from "@aws-sdk/client-cognito-identity-provider";
+import { constants } from "@t4/constants";
+import { scopesSchema } from "@t4/types";
 
 class AuthProvider {
   private cognitoClient: CognitoIdentityProviderClient;
@@ -38,8 +40,12 @@ class AuthProvider {
         SupportedIdentityProviders: ["COGNITO"],
         UserPoolId: Config.USER_POOL_ID,
         ClientName: args.clientName,
+        AllowedOAuthFlowsUserPoolClient: true,
         AllowedOAuthFlows: ["client_credentials"],
-        AllowedOAuthScopes: ["t4/items:write", "t4/items:read"],
+        AllowedOAuthScopes: [
+          `${constants.enum.resourceServerIdentifier}/${scopesSchema.enum.readItems}`,
+          `${constants.enum.resourceServerIdentifier}/${scopesSchema.enum.writeItems}`,
+        ],
       } satisfies CreateUserPoolClientCommandInput);
       return await this.cognitoClient.send(command);
     });

@@ -13,3 +13,4 @@ node_modules
 
 # local env files
 .env*.local
+packages/web/src/app/docs/v0.0.1/using-the-api/main.py

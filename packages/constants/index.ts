@@ -9,7 +9,7 @@ export const constants = z.nativeEnum({
   devStageName: "dev",
   devUrl: "http://localhost:3000",
   nextjsSitePath: "packages/web",
-  nextAuthSecret: "HTZioxu3HxhIq/Q2WUKHQuW7tgIL51NmZHSio3YyBDQ=",
+  nextAuthSecret: "REPLACE_ME", // execute 'openssl rand -base64 32' to generate a secret
   nextAuthUrl: "https://____REPLACE_ME____.cloudfront.net",
   authCallbackSuffix: "/api/auth/callback/cognito",
   authStackId: "Auth",

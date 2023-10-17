@@ -45,7 +45,8 @@ const pythonCode = (
   response = requests.post(
       API_URL + "/api/v0.0.1/items",
       json={
-          "Imei": "505011234567890",
+          "name": "My Item",
+          "description": "This is my item",
       },
       headers={
           "Content-Type": "application/json",

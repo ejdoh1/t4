@@ -39,3 +39,16 @@ npm run dev
 cd packages/web
 npm run dev
 ```
+
+## Screenshots
+
+![Landing](./screenshots/landing.png)
+![Signin](./screenshots/signin.png)
+![Home](./screenshots/home.png)
+![Items](./screenshots/items.png)
+![Create item](./screenshots/createItem.png)
+![Apps](./screenshots/apps.png)
+![View app](./screenshots/viewApp.png)
+![Docs](./screenshots/docs.png)
+![Docs version](./screenshots/docsV0.0.1.png)
+![API Docs](./screenshots/apiDocs.png)
